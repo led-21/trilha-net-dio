@@ -1,0 +1,7 @@
+### Teste de Validação de CPF
+POST http://localhost:7173/api/ValidateCPF
+Content-Type: application/json
+
+{
+  "cpf": "12345678909"
+}
