@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValidaçãoCPF", "ValidaçãoCPF\ValidaçãoCPF.csproj", "{D4F8457C-6E33-4DA0-BEEC-4135F4FFEAEE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CPFValidator", "CPFValidator.csproj", "{D8F2DBF3-7245-4640-9EA1-D065D696C75F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D4F8457C-6E33-4DA0-BEEC-4135F4FFEAEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D4F8457C-6E33-4DA0-BEEC-4135F4FFEAEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D4F8457C-6E33-4DA0-BEEC-4135F4FFEAEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D4F8457C-6E33-4DA0-BEEC-4135F4FFEAEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8F2DBF3-7245-4640-9EA1-D065D696C75F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8F2DBF3-7245-4640-9EA1-D065D696C75F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8F2DBF3-7245-4640-9EA1-D065D696C75F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8F2DBF3-7245-4640-9EA1-D065D696C75F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
