@@ -1,0 +1,22 @@
+﻿### Testar o endpoint FilterMovies
+GET http://localhost:7276/api/FilterMovies?title=Inception
+Accept: application/json
+
+###
+
+### Testar o endpoint ListMovies
+GET http://localhost:7276/api/ListMovies
+Accept: application/json
+
+###
+
+### Testar o endpoint SaveMovie
+POST http://localhost:7276/api/SaveMovie
+Content-Type: application/json
+
+{
+  "id": "20",
+  "Title": "Inception",
+  "Director": "Christopher Nolan",
+  "ReleaseYear": 2010
+}
