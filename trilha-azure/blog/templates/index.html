@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">Últimos Posts</h1>
+    
+    {% for post in posts %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h2 class="card-title">{{ post.title }}</h2>
+                <p class="card-text text-muted">
+                    Por {{ post.author }} em {{ post.created_at.strftime('%d/%m/%Y %H:%M') }}
+                </p>
+                <p class="card-text">{{ post.content[:200] }}...</p>
+                <a href="{{ url_for('post', post_id=post.id) }}" class="btn btn-primary">Ler mais</a>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
