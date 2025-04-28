@@ -47,4 +47,41 @@ def validar_codigo_barras(numero):
     """Valida o código de barras de 44 caracteres"""
     # Verifica o dígito verificador (posição 4)
     dv = numero[4]
-    base_cal
+    base_calculo = numero[:4] + numero[5:]
+    
+    if not calcular_digito_verificador_mod11(base_calculo) == dv:
+        return False, f"Dígito verificador do código de barras inválido: {dv}"
+    
+    return True, "Código de barras válido"
+
+def calcular_digito_verificador(campo):
+    """Calcula o dígito verificador módulo 10"""
+    soma = 0
+    peso = 2
+    
+    for c in reversed(campo):
+        valor = int(c) * peso
+        soma += sum(int(d) for d in str(valor))
+        peso = 3 if peso == 2 else 2
+    
+    digito = (10 - (soma % 10)) % 10
+    return str(digito)
+
+def calcular_digito_verificador_mod11(campo):
+    """Calcula o dígito verificador módulo 11"""
+    soma = 0
+    peso = 2
+    
+    for c in reversed(campo):
+        soma += int(c) * peso
+        peso += 1
+        if peso > 9:
+            peso = 2
+    
+    resto = soma % 11
+    if resto == 0 or resto == 1:
+        digito = 0
+    else:
+        digito = 11 - resto
+    
+    return str(digito)
