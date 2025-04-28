@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roleta de Jogo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        
+        .container {
+            text-align: center;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .roulette-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin: 0 auto 30px;
+        }
+        
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            border: 5px solid #333;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+        }
+        
+        .wheel-center {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: #fff;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            border: 3px solid #333;
+        }
+        
+        .pointer {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 40px solid red;
+            z-index: 5;
+        }
+        
+        .section {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            transform-origin: bottom right;
+            left: 0;
+            top: 0;
+            border: 1px solid #333;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+        }
+        
+        button {
+            padding: 12px 24px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .result {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            height: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Roleta de Jogo</h1>
+        
+        <div class="roulette-container">
+            <div class="pointer"></div>
+            <div class="wheel" id="wheel">
+                <div class="wheel-center"></div>
+                <!-- As seções serão adicionadas via JavaScript -->
+            </div>
+        </div>
+        
+        <button id="spin-btn">Girar Roleta</button>
+        
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const wheel = document.getElementById('wheel');
+            const spinBtn = document.getElementById('spin-btn');
+            const resultDiv = document.getElementById('result');
+            
+            // Cores e valores para a roleta
+            const sections = [
+                { color: '#e74c3c', text: '1' },  // Vermelho
+                { color: '#2ecc71', text: '2' },  // Verde
+                { color: '#e74c3c', text: '3' },  // Vermelho
+                { color: '#2ecc71', text: '4' },  // Verde
+                { color: '#e74c3c', text: '5' },  // Vermelho
+                { color: '#2ecc71', text: '6' },  // Verde
+                { color: '#e74c3c', text: '7' },  // Vermelho
+                { color: '#2ecc71', text: '8' },  // Verde
+                { color: '#e74c3c', text: '9' },  // Vermelho
+                { color: '#2ecc71', text: '10' }, // Verde
+                { color: '#e74c3c', text: '11' }, // Vermelho
+                { color: '#2ecc71', text: '12' }  // Verde
+            ];
+            
+            // Criar as seções da roleta
+            function createWheelSections() {
+                const angle = 360 / sections.length;
+                
+                sections.forEach((section, index) => {
+                    const sectionElement = document.createElement('div');
+                    sectionElement.className = 'section';
+                    sectionElement.style.transform = `rotate(${angle * index}deg)`;
+                    sectionElement.style.backgroundColor = section.color;
+                    
+                    // Posicionar o texto corretamente
+                    const textElement = document.createElement('div');
+                    textElement.textContent = section.text;
+                    textElement.style.transform = `rotate(${angle / 2}deg) translate(30px) rotate(-${angle / 2}deg)`;
+                    
+                    sectionElement.appendChild(textElement);
+                    wheel.appendChild(sectionElement);
+                });
+            }
+            
+            // Girar a roleta
+            function spinWheel() {
+                spinBtn.disabled = true;
+                resultDiv.textContent = '';
+                
+                // Número aleatório de voltas completas (5-10)
+                const spins = 5 + Math.floor(Math.random() * 6);
+                
+                // Ângulo final aleatório (0-360)
+                const sectionAngle = 360 / sections.length;
+                const winningSection = Math.floor(Math.random() * sections.length);
+                const finalAngle = spins * 360 + (winningSection * sectionAngle) + (sectionAngle / 2);
+                
+                // Aplicar a rotação
+                wheel.style.transform = `rotate(${-finalAngle}deg)`;
+                
+                // Mostrar o resultado quando a animação terminar
+                setTimeout(() => {
+                    spinBtn.disabled = false;
+                    resultDiv.textContent = `Resultado: ${sections[winningSection].text}`;
+                    
+                    // Efeito visual no resultado
+                    resultDiv.style.color = sections[winningSection].color;
+                    resultDiv.style.transition = 'color 0.3s';
+                }, 4000);
+            }
+            
+            // Inicializar a roleta
+            createWheelSections();
+            
+            // Evento do botão
+            spinBtn.addEventListener('click', spinWheel);
+        });
+    </script>
+</body>
+</html>
