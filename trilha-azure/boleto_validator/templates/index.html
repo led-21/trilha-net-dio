@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validador de Boletos Bancários</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            display: none;
+        }
+        .valid {
+            background-color: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #d6e9c6;
+        }
+        .invalid {
+            background-color: #f2dede;
+            color: #a94442;
+            border: 1px solid #ebccd1;
+        }
+        .formatted {
+            font-family: monospace;
+            font-size: 18px;
+            letter-spacing: 1px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Validador de Boletos Bancários</h1>
+        
+        <div class="input-group">
+            <label for="numero_boleto">Número do Boleto:</label>
+            <input type="text" id="numero_boleto" placeholder="Digite o número do boleto (com ou sem formatação)">
+        </div>
+        
+        <button onclick="validarBoleto()">Validar Boleto</button>
+        
+        <div id="result" class="result">
+            <h3>Resultado da Validação:</h3>
+            <div id="formatted" class="formatted"></div>
+            <p id="message"></p>
+        </div>
+    </div>
+
+    <script>
+        function validarBoleto() {
+            const numero = document.getElementById('numero_boleto').value;
+            const resultDiv = document.getElementById('result');
+            const message = document.getElementById('message');
+            const formatted = document.getElementById('formatted');
+            
+            fetch('/validar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `numero_boleto=${encodeURIComponent(numero)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                resultDiv.style.display = 'block';
+                if (data.valido) {
+                    resultDiv.className = 'result valid';
+                    message.textContent = '✔ ' + data.detalhes;
+                    formatted.textContent = data.numero_formatado;
+                } else {
+                    resultDiv.className = 'result invalid';
+                    message.textContent = '✖ ' + data.detalhes;
+                    formatted.textContent = '';
+                }
+            })
+            .catch(error => {
+                resultDiv.style.display = 'block';
+                resultDiv.className = 'result invalid';
+                message.textContent = 'Erro ao validar o boleto: ' + error;
+                formatted.textContent = '';
+            });
+        }
+        
+        // Permite a validação ao pressionar Enter
+        document.getElementById('numero_boleto').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                validarBoleto();
+            }
+        });
+    </script>
+</body>
+</html>
+           
